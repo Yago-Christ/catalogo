@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo · Cabelo's Prints</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <div class="wrap header-inner">
+      <div class="logo"><span class="dot"></span>CABELO'S PRINTS</div>
+      <nav>
+        <a class="nav-link" href="#catalogo">Catálogo</a>
+        <button class="nav-link nav-link-btn" id="navPersonalizado">Personalizado</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eyebrow">camada por camada</div>
+      <h1>Modelos prontos para imprimir, ou desenhados sob medida.</h1>
+      <p>Escolha um modelo do catálogo e peça pelo WhatsApp, ou descreva o que você imagina e a gente desenvolve para você.</p>
+    </div>
+  </section>
+
+  <section id="catalogo" class="wrap">
+    <div class="filter-bar">
+      <div class="filter-tags" id="filterTags"></div>
+      <input type="text" class="search-input" id="searchInput" placeholder="Buscar modelo...">
+    </div>
+
+    <div class="grid" id="productGrid"></div>
+  </section>
+
+  <section id="personalizado" class="custom-section">
+    <div class="wrap custom-inner">
+      <div class="custom-text">
+        <div class="hero-eyebrow">sob encomenda</div>
+        <h2>Tem algo em mente que não está no catálogo?</h2>
+        <p>Descreva sua ideia direto no WhatsApp e te respondemos com prazo e valor antes de qualquer compromisso.</p>
+        <div class="custom-steps">
+          <div class="custom-step"><span class="num">01</span><span class="txt"><b>Você descreve</b> — o que precisa, tamanho aproximado, pra que serve</span></div>
+          <div class="custom-step"><span class="num">02</span><span class="txt"><b>Avaliamos</b> — viabilidade, material e prazo de impressão</span></div>
+          <div class="custom-step"><span class="num">03</span><span class="txt"><b>Você aprova</b> — valor combinado antes de começarmos</span></div>
+        </div>
+      </div>
+
+      <div class="custom-cta">
+        <p class="custom-cta-label">Pedido personalizado</p>
+        <p class="custom-cta-desc">Clique abaixo e o WhatsApp abre direto com uma mensagem pronta — só completar com os detalhes do que você precisa.</p>
+        <button class="btn-submit btn-cta-whats" id="btnCustomWhats">Falar no WhatsApp →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span>CABELO'S PRINTS — impressão 3D sob medida</span>
+      <span id="footerYear"></span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
