@@ -197,6 +197,7 @@
   <div id="panel" style="display:none">
     <h1>Gerador de catálogo</h1>
     <p class="subtitle">Cadastre os produtos e gere o código para colar no GitHub.</p>
+    <p class="copy-note" id="loadStatus" style="display:none"></p>
 
     <div class="section-title" id="formSectionTitle">Adicionar produto</div>
     <form id="productForm">
@@ -271,6 +272,7 @@
 
 <script>
   const ADMIN_PASSWORD = 'Cabelos2003#';
+  const PRODUCTS_JS_URL = 'https://yago-christ.github.io/catalogo/products.js';
   let products = [];
   let editingIndex = null;
 
@@ -290,12 +292,52 @@
     if(pwInput.value.trim() === ADMIN_PASSWORD){
       document.getElementById('loginBox').style.display = 'none';
       document.getElementById('panel').style.display = 'block';
+      loadExistingProducts();
     } else {
       pwError.style.display = 'block';
     }
   }
   pwSubmit.addEventListener('click', tryLogin);
   pwInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') tryLogin(); });
+
+  // ---------- carregar lista já publicada no site ----------
+  async function loadExistingProducts(){
+    const statusEl = document.getElementById('loadStatus');
+    statusEl.style.display = 'block';
+    statusEl.textContent = 'Buscando produtos já publicados no site...';
+
+    try{
+      const res = await fetch(PRODUCTS_JS_URL + '?t=' + Date.now());
+      if(!res.ok) throw new Error('Não foi possível acessar o arquivo (status ' + res.status + ').');
+      const text = await res.text();
+
+      const productsMatch = text.match(/const\s+PRODUCTS\s*=\s*(\[[\s\S]*?\]\s*;)/);
+      const whatsMatch = text.match(/const\s+WHATSAPP_NUMBER\s*=\s*'([^']*)'/);
+
+      if(!productsMatch){
+        throw new Error('Não encontrei a lista PRODUCTS dentro do arquivo.');
+      }
+
+      // Avalia só o literal de array, isolado, sem acesso ao restante da página.
+      const arrayLiteral = productsMatch[1].replace(/;\s*$/, '');
+      const parsed = Function('"use strict"; return (' + arrayLiteral + ');')();
+
+      if(!Array.isArray(parsed)) throw new Error('Formato inesperado.');
+
+      products = parsed;
+      if(whatsMatch){
+        document.getElementById('f-whats').value = whatsMatch[1];
+      }
+
+      renderList();
+      statusEl.textContent = `Carregado: ${products.length} produto(s) já existentes do site.`;
+      statusEl.style.color = '#4F9D74';
+    }catch(err){
+      console.error('Erro ao carregar produtos existentes:', err);
+      statusEl.textContent = 'Não consegui carregar a lista atual do site automaticamente. Você pode cadastrar do zero, ou recarregar a página para tentar de novo.';
+      statusEl.style.color = '#C0392B';
+    }
+  }
 
   // ---------- helpers ----------
   function showToast(text){
