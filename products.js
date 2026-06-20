@@ -3,10 +3,10 @@
    Corrigido manualmente em 20/06/2026 (bug de quebra de linha
    na descrição já resolvido no gerador.html também).
    ========================================================= */
-
+ 
 // Número de WhatsApp da empresa (com DDI + DDD, só números)
 const WHATSAPP_NUMBER = '5551981503616';
-
+ 
 const PRODUCTS = [
   {
     name: 'Protetor de cabo',
