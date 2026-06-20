@@ -117,17 +117,6 @@
   .form-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .form-grid .full{ grid-column: 1 / -1; }
 
-  .file-drop{
-    border: 1px dashed var(--line);
-    padding: 18px;
-    text-align:center;
-    font-size: 13px;
-    color: var(--ink-soft);
-    cursor: pointer;
-    transition: all .15s ease;
-  }
-  .file-drop:hover{ border-color: var(--accent); color: var(--ink); }
-  .file-drop.has-file{ border-color: var(--ok); color: var(--ink); border-style: solid; }
   .file-hint{ font-size: 11.5px; color: var(--ink-soft); margin-top: 6px; }
 
   .form-actions{ display:flex; gap: 10px; margin-top: 6px; margin-bottom: 30px;}
@@ -238,13 +227,15 @@
           <input type="text" id="f-time" placeholder="Ex: 4h">
         </div>
         <div class="field full">
-          <label>Nome do arquivo da foto (opcional)</label>
-          <div class="file-drop" id="fileDrop">Clique para escolher uma foto do modelo</div>
-          <input type="file" id="f-image" accept="image/*" style="display:none">
+          <label for="f-image">Link direto da foto (opcional)</label>
+          <input type="text" id="f-image" placeholder="Ex: https://i.imgur.com/AbCdEfG.jpg">
           <p class="file-hint">
-            A foto não é enviada por aqui — você vai subir o arquivo de imagem direto no GitHub depois.
-            Isso só guarda o nome do arquivo (ex: <code>vaso-hexagonal.jpg</code>) para o código apontar pra foto certa.
+            Cole aqui o link direto da imagem (Google Drive convertido ou Imgur). O link precisa abrir só a foto, sem nenhum site ao redor.
           </p>
+          <div id="imagePreviewWrap" style="display:none; margin-top: 10px;">
+            <img id="imagePreview" style="max-width: 120px; max-height: 120px; border: 1px solid var(--line); display:block;">
+          </div>
+          <p class="error-text" id="imageError" style="display:none">Não consegui carregar essa imagem. Confira se o link é direto para a foto.</p>
         </div>
       </div>
       <div class="form-actions">
@@ -282,7 +273,6 @@
   const ADMIN_PASSWORD = 'Cabelos2003#';
   let products = [];
   let editingIndex = null;
-  let currentImageName = '';
 
   // ---------- senha ----------
   const pwInput = document.getElementById('pwInput');
@@ -317,33 +307,36 @@
 
   function resetForm(){
     document.getElementById('productForm').reset();
-    document.getElementById('f-whats').value = document.getElementById('f-whats').value; // keep whats number
-    currentImageName = '';
     editingIndex = null;
     document.getElementById('editingIndex').value = '';
-    document.getElementById('fileDrop').textContent = 'Clique para escolher uma foto do modelo';
-    document.getElementById('fileDrop').classList.remove('has-file');
+    document.getElementById('imagePreviewWrap').style.display = 'none';
+    document.getElementById('imageError').style.display = 'none';
     document.getElementById('submitBtn').textContent = 'Adicionar à lista';
     document.getElementById('cancelEditBtn').style.display = 'none';
     document.getElementById('formSectionTitle').textContent = 'Adicionar produto';
   }
 
-  // ---------- file ----------
-  document.getElementById('fileDrop').addEventListener('click', () => {
-    document.getElementById('f-image').click();
-  });
-  document.getElementById('f-image').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    const drop = document.getElementById('fileDrop');
-    if(file){
-      currentImageName = file.name;
-      drop.textContent = `Arquivo: ${file.name}`;
-      drop.classList.add('has-file');
-    } else {
-      currentImageName = '';
-      drop.textContent = 'Clique para escolher uma foto do modelo';
-      drop.classList.remove('has-file');
+  // ---------- link de imagem: prévia ----------
+  const imageInput = document.getElementById('f-image');
+  const imagePreview = document.getElementById('imagePreview');
+  const imagePreviewWrap = document.getElementById('imagePreviewWrap');
+  const imageError = document.getElementById('imageError');
+
+  imageInput.addEventListener('input', () => {
+    const url = imageInput.value.trim();
+    imageError.style.display = 'none';
+    if(!url){
+      imagePreviewWrap.style.display = 'none';
+      return;
     }
+    imagePreview.onload = () => {
+      imagePreviewWrap.style.display = 'block';
+    };
+    imagePreview.onerror = () => {
+      imagePreviewWrap.style.display = 'none';
+      imageError.style.display = 'block';
+    };
+    imagePreview.src = url;
   });
 
   // ---------- list render ----------
@@ -358,7 +351,7 @@
 
     container.innerHTML = '<div class="list">' + products.map((p, i) => `
       <div class="row">
-        <div class="thumb">${p.image ? 'foto' : 'sem foto'}</div>
+        <div class="thumb">${p.image ? `<img src="${escapeHtml(p.image)}" alt="">` : 'sem foto'}</div>
         <div class="info">
           <div class="name">${escapeHtml(p.name)}</div>
           <div class="meta">${escapeHtml(p.category || 'sem categoria')} ${p.price ? '· R$ ' + escapeHtml(p.price) : ''}</div>
@@ -385,10 +378,8 @@
     document.getElementById('f-price').value = p.price || '';
     document.getElementById('f-material').value = p.material || '';
     document.getElementById('f-time').value = p.time || '';
-    currentImageName = p.image || '';
-    const drop = document.getElementById('fileDrop');
-    drop.textContent = p.image ? `Arquivo: ${p.image} (clique para trocar)` : 'Clique para escolher uma foto do modelo';
-    drop.classList.toggle('has-file', !!p.image);
+    document.getElementById('f-image').value = p.image || '';
+    imageInput.dispatchEvent(new Event('input'));
     editingIndex = i;
     document.getElementById('submitBtn').textContent = 'Salvar alterações';
     document.getElementById('cancelEditBtn').style.display = 'inline-block';
@@ -419,7 +410,7 @@
       price: document.getElementById('f-price').value.trim(),
       material: document.getElementById('f-material').value.trim(),
       time: document.getElementById('f-time').value.trim(),
-      image: currentImageName
+      image: document.getElementById('f-image').value.trim()
     };
 
     if(editingIndex !== null){
