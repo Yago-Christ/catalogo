@@ -1,12 +1,11 @@
 /* =========================================================
    PRODUTOS DO CATÁLOGO
-   Corrigido manualmente em 20/06/2026 (bug de quebra de linha
-   na descrição já resolvido no gerador.html também).
+   Gerado pelo painel gerador em 20/06/2026.
    ========================================================= */
- 
+
 // Número de WhatsApp da empresa (com DDI + DDD, só números)
 const WHATSAPP_NUMBER = '5551981503616';
- 
+
 const PRODUCTS = [
   {
     name: 'Protetor de cabo',
@@ -16,5 +15,14 @@ const PRODUCTS = [
     material: 'PLA',
     time: '3h',
     image: 'https://makerworld.bblmw.com/makerworld/model/USb6f67232d9c076/design/2025-01-10_7512e7b61df64.jpg?x-oss-process=image/resize,w_1000/format,webp'
+  },
+  {
+    name: 'bottle buddy',
+    desc: 'teste',
+    category: 'Perçonalizaçao',
+    price: '10,00',
+    material: 'PLA',
+    time: '20min',
+    image: 'https://makerworld.bblmw.com/makerworld/model/US83dd4bad3cc4d4/design/2024-03-27_554a25863f49.png?x-oss-process=image/resize,w_1000/format,webp'
   }
 ];
