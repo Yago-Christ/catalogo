@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de catálogo · Cabelo's Prints</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0D0D0C;
+    --bg-raised: #161614;
+    --ink: #F5F4F0;
+    --ink-soft: #9A968C;
+    --line: #2A2A26;
+    --accent: #FF6B35;
+    --ok: #4F9D74;
+    --danger: #C0392B;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .wrap{ max-width: 880px; margin: 0 auto; padding: 40px 24px 80px; }
+  h1{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+  .subtitle{ color: var(--ink-soft); font-size: 14px; margin-bottom: 36px; }
+  .section-title{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    margin-top: 36px;
+  }
+  .section-title:first-of-type{ margin-top: 0; }
+
+  /* login */
+  .login-box{ max-width: 340px; margin: 80px auto; text-align: left; }
+  .login-box p{ color: var(--ink-soft); font-size: 14px; margin-bottom: 20px; }
+  .pw-wrap{ position: relative; margin-bottom: 12px; }
+  input[type="password"], input[type="text"]{
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+    color: var(--ink);
+    width: 100%;
+  }
+  input::placeholder{ color: var(--ink-soft); }
+  input:focus{ outline: none; border-color: var(--ink); }
+  .pw-wrap input{ padding-right: 44px; }
+  .pw-toggle{
+    position:absolute; right:0; top:0; height:100%; width:44px;
+    display:flex; align-items:center; justify-content:center;
+    background:none; border:none; color: var(--ink-soft); cursor:pointer;
+  }
+  .pw-toggle:hover{ color: var(--ink); }
+  .error-text{ color: var(--danger); font-size: 12px; margin-bottom: 10px; }
+
+  button{ font-family: inherit; cursor: pointer; border: none; }
+  .btn{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 11px 18px;
+    border: 1px solid var(--line);
+    background: none;
+    color: var(--ink-soft);
+    transition: all .15s ease;
+  }
+  .btn:hover{ color: var(--ink); border-color: var(--ink); }
+  .btn-primary{
+    background: var(--ink); color: var(--bg); border-color: var(--ink);
+  }
+  .btn-primary:hover{ background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-accent{
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .btn-accent:hover{ opacity: 0.88; }
+  .btn-full{ width: 100%; text-align: center; }
+
+  /* form */
+  .field{ display:flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+  .field label{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+  }
+  textarea{
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+    color: var(--ink);
+    min-height: 80px;
+    resize: vertical;
+  }
+  textarea:focus{ outline:none; border-color: var(--ink); }
+  .form-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid .full{ grid-column: 1 / -1; }
+
+  .file-drop{
+    border: 1px dashed var(--line);
+    padding: 18px;
+    text-align:center;
+    font-size: 13px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all .15s ease;
+  }
+  .file-drop:hover{ border-color: var(--accent); color: var(--ink); }
+  .file-drop.has-file{ border-color: var(--ok); color: var(--ink); border-style: solid; }
+  .file-hint{ font-size: 11.5px; color: var(--ink-soft); margin-top: 6px; }
+
+  .form-actions{ display:flex; gap: 10px; margin-top: 6px; margin-bottom: 30px;}
+
+  /* list */
+  .list{ border: 1px solid var(--line); display:flex; flex-direction: column; margin-bottom: 30px; }
+  .list-empty{ padding: 26px; text-align:center; color: var(--ink-soft); font-size: 13px; border: 1px solid var(--line); margin-bottom: 30px; }
+  .row{
+    display:flex; align-items:center; gap: 14px; padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .row:last-child{ border-bottom:none; }
+  .row .thumb{
+    width: 42px; height:42px; background:#1F1F1B; flex-shrink:0; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; font-size:9px; color:var(--ink-soft);
+  }
+  .row .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .row .info{ flex:1; min-width:0; }
+  .row .info .name{ font-size: 13.5px; font-weight: 500; }
+  .row .info .meta{ font-size: 12px; color: var(--ink-soft); }
+  .row-actions{ display:flex; gap: 8px; flex-shrink:0; }
+  .row-actions button{
+    font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft);
+    padding: 5px 10px; border: 1px solid var(--line); background:none;
+  }
+  .row-actions button:hover{ color: var(--ink); border-color: var(--ink); }
+  .row-actions button.danger:hover{ color: var(--danger); border-color: var(--danger); }
+
+  /* output */
+  .output-box{ display:none; }
+  .output-box.show{ display:block; }
+  .code-output{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    padding: 18px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 360px;
+    overflow-y: auto;
+    margin-bottom: 14px;
+  }
+  .copy-note{ font-size: 13px; color: var(--ink-soft); margin-bottom: 14px; }
+
+  .toast{
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--ink); color: var(--bg);
+    font-family: var(--font-mono); font-size: 13px;
+    padding: 12px 18px;
+    transform: translateY(20px); opacity:0; pointer-events:none;
+    transition: all .25s ease; z-index: 300;
+  }
+  .toast.show{ transform: translateY(0); opacity:1; }
+
+  @media (max-width: 600px){
+    .form-grid{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div class="login-box" id="loginBox">
+    <h1>Gerador de catálogo</h1>
+    <p>Digite a senha para montar a lista de produtos.</p>
+    <div class="pw-wrap">
+      <input type="password" id="pwInput" placeholder="Senha">
+      <button class="pw-toggle" id="pwToggle" type="button">👁</button>
+    </div>
+    <p class="error-text" id="pwError" style="display:none">Senha incorreta.</p>
+    <button class="btn btn-primary btn-full" id="pwSubmit">Entrar</button>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="panel" style="display:none">
+    <h1>Gerador de catálogo</h1>
+    <p class="subtitle">Cadastre os produtos e gere o código para colar no GitHub.</p>
+
+    <div class="section-title" id="formSectionTitle">Adicionar produto</div>
+    <form id="productForm">
+      <input type="hidden" id="editingIndex" value="">
+      <div class="form-grid">
+        <div class="field full">
+          <label for="f-name">Nome do modelo</label>
+          <input type="text" id="f-name" required placeholder="Ex: Vaso geométrico hexagonal">
+        </div>
+        <div class="field full">
+          <label for="f-desc">Descrição curta</label>
+          <textarea id="f-desc" placeholder="Descrição que aparece no card"></textarea>
+        </div>
+        <div class="field">
+          <label for="f-category">Categoria</label>
+          <input type="text" id="f-category" placeholder="Ex: Decoração">
+        </div>
+        <div class="field">
+          <label for="f-price">Preço (R$)</label>
+          <input type="text" id="f-price" placeholder="Ex: 45,00">
+        </div>
+        <div class="field">
+          <label for="f-material">Material</label>
+          <input type="text" id="f-material" placeholder="Ex: PLA">
+        </div>
+        <div class="field">
+          <label for="f-time">Tempo de impressão</label>
+          <input type="text" id="f-time" placeholder="Ex: 4h">
+        </div>
+        <div class="field full">
+          <label>Nome do arquivo da foto (opcional)</label>
+          <div class="file-drop" id="fileDrop">Clique para escolher uma foto do modelo</div>
+          <input type="file" id="f-image" accept="image/*" style="display:none">
+          <p class="file-hint">
+            A foto não é enviada por aqui — você vai subir o arquivo de imagem direto no GitHub depois.
+            Isso só guarda o nome do arquivo (ex: <code>vaso-hexagonal.jpg</code>) para o código apontar pra foto certa.
+          </p>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="submitBtn">Adicionar à lista</button>
+        <button type="button" class="btn" id="cancelEditBtn" style="display:none">Cancelar edição</button>
+      </div>
+    </form>
+
+    <div class="section-title">Produtos na lista (<span id="countLabel">0</span>)</div>
+    <div id="listContainer"></div>
+
+    <div class="section-title">Número de WhatsApp</div>
+    <div class="field">
+      <label for="f-whats">Com DDI e DDD, só números</label>
+      <input type="text" id="f-whats" placeholder="Ex: 5551981503616" value="5551981503616">
+    </div>
+
+    <div style="margin: 30px 0;">
+      <button class="btn btn-accent btn-full" id="generateBtn">Gerar código do products.js →</button>
+    </div>
+
+    <div class="output-box" id="outputBox">
+      <div class="section-title">Código gerado</div>
+      <p class="copy-note">Copie tudo abaixo e cole no arquivo <code>products.js</code> do seu repositório no GitHub, substituindo o conteúdo atual.</p>
+      <div class="code-output" id="codeOutput"></div>
+      <button class="btn btn-primary" id="copyBtn">Copiar código</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const ADMIN_PASSWORD = 'Cabelos2003#';
+  let products = [];
+  let editingIndex = null;
+  let currentImageName = '';
+
+  // ---------- senha ----------
+  const pwInput = document.getElementById('pwInput');
+  const pwToggle = document.getElementById('pwToggle');
+  const pwError = document.getElementById('pwError');
+  const pwSubmit = document.getElementById('pwSubmit');
+
+  pwToggle.addEventListener('click', () => {
+    const isPw = pwInput.type === 'password';
+    pwInput.type = isPw ? 'text' : 'password';
+    pwInput.style.color = isPw ? '#FF6B35' : '#F5F4F0';
+  });
+
+  function tryLogin(){
+    if(pwInput.value.trim() === ADMIN_PASSWORD){
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('panel').style.display = 'block';
+    } else {
+      pwError.style.display = 'block';
+    }
+  }
+  pwSubmit.addEventListener('click', tryLogin);
+  pwInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') tryLogin(); });
+
+  // ---------- helpers ----------
+  function showToast(text){
+    const toast = document.getElementById('toast');
+    toast.textContent = text;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2600);
+  }
+
+  function resetForm(){
+    document.getElementById('productForm').reset();
+    document.getElementById('f-whats').value = document.getElementById('f-whats').value; // keep whats number
+    currentImageName = '';
+    editingIndex = null;
+    document.getElementById('editingIndex').value = '';
+    document.getElementById('fileDrop').textContent = 'Clique para escolher uma foto do modelo';
+    document.getElementById('fileDrop').classList.remove('has-file');
+    document.getElementById('submitBtn').textContent = 'Adicionar à lista';
+    document.getElementById('cancelEditBtn').style.display = 'none';
+    document.getElementById('formSectionTitle').textContent = 'Adicionar produto';
+  }
+
+  // ---------- file ----------
+  document.getElementById('fileDrop').addEventListener('click', () => {
+    document.getElementById('f-image').click();
+  });
+  document.getElementById('f-image').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    const drop = document.getElementById('fileDrop');
+    if(file){
+      currentImageName = file.name;
+      drop.textContent = `Arquivo: ${file.name}`;
+      drop.classList.add('has-file');
+    } else {
+      currentImageName = '';
+      drop.textContent = 'Clique para escolher uma foto do modelo';
+      drop.classList.remove('has-file');
+    }
+  });
+
+  // ---------- list render ----------
+  function renderList(){
+    const container = document.getElementById('listContainer');
+    document.getElementById('countLabel').textContent = products.length;
+
+    if(products.length === 0){
+      container.innerHTML = '<div class="list-empty">Nenhum produto adicionado ainda.</div>';
+      return;
+    }
+
+    container.innerHTML = '<div class="list">' + products.map((p, i) => `
+      <div class="row">
+        <div class="thumb">${p.image ? 'foto' : 'sem foto'}</div>
+        <div class="info">
+          <div class="name">${escapeHtml(p.name)}</div>
+          <div class="meta">${escapeHtml(p.category || 'sem categoria')} ${p.price ? '· R$ ' + escapeHtml(p.price) : ''}</div>
+        </div>
+        <div class="row-actions">
+          <button onclick="editProduct(${i})">editar</button>
+          <button class="danger" onclick="deleteProduct(${i})">excluir</button>
+        </div>
+      </div>
+    `).join('') + '</div>';
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str ?? '';
+    return div.innerHTML;
+  }
+
+  window.editProduct = function(i){
+    const p = products[i];
+    document.getElementById('f-name').value = p.name || '';
+    document.getElementById('f-desc').value = p.desc || '';
+    document.getElementById('f-category').value = p.category || '';
+    document.getElementById('f-price').value = p.price || '';
+    document.getElementById('f-material').value = p.material || '';
+    document.getElementById('f-time').value = p.time || '';
+    currentImageName = p.image || '';
+    const drop = document.getElementById('fileDrop');
+    drop.textContent = p.image ? `Arquivo: ${p.image} (clique para trocar)` : 'Clique para escolher uma foto do modelo';
+    drop.classList.toggle('has-file', !!p.image);
+    editingIndex = i;
+    document.getElementById('submitBtn').textContent = 'Salvar alterações';
+    document.getElementById('cancelEditBtn').style.display = 'inline-block';
+    document.getElementById('formSectionTitle').textContent = 'Editando produto';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.deleteProduct = function(i){
+    if(!confirm('Remover este produto da lista?')) return;
+    products.splice(i, 1);
+    renderList();
+    showToast('Produto removido da lista.');
+    document.getElementById('outputBox').classList.remove('show');
+  };
+
+  document.getElementById('cancelEditBtn').addEventListener('click', resetForm);
+
+  // ---------- submit ----------
+  document.getElementById('productForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('f-name').value.trim();
+    if(!name){ showToast('Dê um nome ao modelo.'); return; }
+
+    const data = {
+      name,
+      desc: document.getElementById('f-desc').value.trim(),
+      category: document.getElementById('f-category').value.trim(),
+      price: document.getElementById('f-price').value.trim(),
+      material: document.getElementById('f-material').value.trim(),
+      time: document.getElementById('f-time').value.trim(),
+      image: currentImageName
+    };
+
+    if(editingIndex !== null){
+      products[editingIndex] = data;
+      showToast('Produto atualizado na lista.');
+    } else {
+      products.push(data);
+      showToast('Produto adicionado à lista.');
+    }
+
+    renderList();
+    resetForm();
+    document.getElementById('outputBox').classList.remove('show');
+  });
+
+  // ---------- generate code ----------
+  function jsStringEscape(str){
+    return (str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  }
+
+  document.getElementById('generateBtn').addEventListener('click', () => {
+    const whats = document.getElementById('f-whats').value.trim().replace(/\D/g, '');
+
+    let code = `/* =========================================================
+   PRODUTOS DO CATÁLOGO
+   Gerado pelo painel gerador em ${new Date().toLocaleDateString('pt-BR')}.
+   ========================================================= */
+
+// Número de WhatsApp da empresa (com DDI + DDD, só números)
+const WHATSAPP_NUMBER = '${whats}';
+
+const PRODUCTS = [
+`;
+
+    products.forEach((p, i) => {
+      code += `  {
+    name: '${jsStringEscape(p.name)}',
+    desc: '${jsStringEscape(p.desc)}',
+    category: '${jsStringEscape(p.category)}',
+    price: '${jsStringEscape(p.price)}',
+    material: '${jsStringEscape(p.material)}',
+    time: '${jsStringEscape(p.time)}',
+    image: '${jsStringEscape(p.image)}'
+  }${i < products.length - 1 ? ',' : ''}
+`;
+    });
+
+    code += `];
+`;
+
+    document.getElementById('codeOutput').textContent = code;
+    document.getElementById('outputBox').classList.add('show');
+    document.getElementById('outputBox').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    const code = document.getElementById('codeOutput').textContent;
+    try{
+      await navigator.clipboard.writeText(code);
+      showToast('Código copiado!');
+    }catch(e){
+      showToast('Não foi possível copiar automaticamente. Selecione o texto manualmente.');
+    }
+  });
+
+  renderList();
+</script>
+
+</body>
+</html>
