@@ -9,17 +9,21 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <header>
     <div class="wrap header-inner">
-      <div class="logo"><span class="dot"></span>CABELO'S PRINTS</div>
+      <div class="logo">
+        <img src="cabelosPrints.jpg" alt="Logo Cabelo's Prints">
+        <div class="logo-text">
+          <span class="logo-title">CABELO'S PRINTS</span>
+          <span class="logo-sub">impressão 3D sob medida</span>
+        </div>
+      </div>
       <nav>
         <a class="nav-link" href="#catalogo">Catálogo</a>
         <button class="nav-link nav-link-btn" id="navPersonalizado">Personalizado</button>
       </nav>
     </div>
   </header>
-
   <section class="hero">
     <div class="wrap">
       <div class="hero-eyebrow">camada por camada</div>
@@ -27,16 +31,13 @@
       <p>Escolha um modelo do catálogo e peça pelo WhatsApp, ou descreva o que você imagina e a gente desenvolve para você.</p>
     </div>
   </section>
-
   <section id="catalogo" class="wrap">
     <div class="filter-bar">
       <div class="filter-tags" id="filterTags"></div>
       <input type="text" class="search-input" id="searchInput" placeholder="Buscar modelo...">
     </div>
-
     <div class="grid" id="productGrid"></div>
   </section>
-
   <section id="personalizado" class="custom-section">
     <div class="wrap custom-inner">
       <div class="custom-text">
@@ -49,7 +50,6 @@
           <div class="custom-step"><span class="num">03</span><span class="txt"><b>Você aprova</b> — valor combinado antes de começarmos</span></div>
         </div>
       </div>
-
       <div class="custom-cta">
         <p class="custom-cta-label">Pedido personalizado</p>
         <p class="custom-cta-desc">Clique abaixo e o WhatsApp abre direto com uma mensagem pronta — só completar com os detalhes do que você precisa.</p>
@@ -57,16 +57,13 @@
       </div>
     </div>
   </section>
-
   <footer>
     <div class="wrap footer-inner">
       <span>CABELO'S PRINTS — impressão 3D sob medida</span>
       <span id="footerYear"></span>
     </div>
   </footer>
-
   <div class="toast" id="toast"></div>
-
   <script src="products.js"></script>
   <script src="script.js"></script>
 </body>
