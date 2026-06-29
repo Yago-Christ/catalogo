@@ -41,31 +41,55 @@ img{ max-width: 100%; display:block; }
 /* ---------- logo banner ---------- */
 .logo-banner{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 48px 0 36px;
+  gap: 14px;
+  padding: 56px 0 40px;
   background: var(--bg);
-  transition: opacity .3s ease, transform .3s ease;
+  position: relative;
+  z-index: 40;
+  transition: opacity .35s ease, transform .35s ease, margin .35s ease;
 }
 
 .logo-banner img{
-  width: 140px;
-  height: 140px;
+  width: 88px;
+  height: 88px;
   object-fit: cover;
   border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.logo-banner .logo-banner-title{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.logo-banner .logo-banner-sub{
+  font-size: 12px;
+  color: var(--ink-soft);
 }
 
 .logo-banner.hidden{
   opacity: 0;
-  transform: translateY(-16px);
+  transform: translateY(-12px);
+  margin-bottom: -1px;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
 /* ---------- header ---------- */
 header{
   border-bottom: 1px solid var(--line);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   background: rgba(13,13,12,0.92);
   backdrop-filter: blur(8px);
   z-index: 50;
@@ -75,6 +99,11 @@ header{
 
 header.visible{
   transform: translateY(0);
+}
+
+/* empurra o conteúdo pra baixo do header quando ele fica fixed+visible */
+body.header-fixed{
+  padding-top: 88px;
 }
 
 .header-inner{
@@ -452,7 +481,6 @@ footer{
 @media (max-width: 880px){
   .grid{ grid-template-columns: repeat(2,1fr); }
   .custom-inner{ grid-template-columns: 1fr; gap: 40px; }
-  .header-inner{ align-items: flex-start; flex-direction: column; }
 }
 
 @media (max-width: 560px){
@@ -462,9 +490,13 @@ footer{
   .hero{ padding: 56px 0 48px; }
   .filter-bar{ flex-direction:column; align-items: flex-start; }
   .search-input{ width: 100%; }
-  .logo img{ width: 42px; height: 42px; }
-  .logo-title{ font-size: 17px; }
-  .logo-sub{ font-size: 11px; }
+  .logo img{ width: 36px; height: 36px; }
+  .logo-title{ font-size: 15px; }
+  .logo-sub{ font-size: 10px; }
+  .header-inner{ padding: 16px 0; }
+  body.header-fixed{ padding-top: 72px; }
+  .logo-banner{ padding: 40px 0 28px; }
+  .logo-banner img{ width: 72px; height: 72px; }
 }
 
 @media (prefers-reduced-motion: reduce){
