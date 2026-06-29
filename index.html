@@ -13,6 +13,8 @@
   <!-- banner logo -->
   <div class="logo-banner" id="logoBanner">
     <img src="cabelosPrints.jpg" alt="Logo Cabelo's Prints">
+    <span class="logo-banner-title">Cabelo's Prints</span>
+    <span class="logo-banner-sub">impressão 3D sob medida</span>
   </div>
 
   <!-- sticky header -->
@@ -73,5 +75,29 @@
   <div class="toast" id="toast"></div>
   <script src="products.js"></script>
   <script src="script.js"></script>
+  <script>
+    // banner → sticky header
+    (function(){
+      const banner = document.getElementById('logoBanner');
+      const header = document.getElementById('siteHeader');
+      if(!banner || !header) return;
+
+      function onScroll(){
+        const bannerBottom = banner.getBoundingClientRect().bottom;
+        if(bannerBottom <= 0){
+          banner.classList.add('hidden');
+          header.classList.add('visible');
+          document.body.classList.add('header-fixed');
+        } else {
+          banner.classList.remove('hidden');
+          header.classList.remove('visible');
+          document.body.classList.remove('header-fixed');
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
 </body>
 </html>
