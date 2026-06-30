@@ -19,7 +19,7 @@ function escapeAttr(str){
 
 // ---------- render: filtros ----------
 function renderFilters(){
-  const cats = ['Todos', ...new Set(PRODUCTS.map(p => p.category).filter(Boolean))];
+  const cats = ['Todos', ...new Set(PRODUCTS.flatMap(p => Array.isArray(p.category) ? p.category : [p.category]).filter(Boolean))];
   const container = document.getElementById('filterTags');
   container.innerHTML = '';
   cats.forEach(cat => {
@@ -35,7 +35,8 @@ function renderFilters(){
 function renderGrid(){
   const grid = document.getElementById('productGrid');
   const filtered = PRODUCTS.filter(p => {
-    const matchCat = activeCategory === 'Todos' || p.category === activeCategory;
+    const categories = Array.isArray(p.category) ? p.category : [p.category];
+    const matchCat = activeCategory === 'Todos' || categories.includes(activeCategory);
     const matchSearch = !searchTerm || p.name.toLowerCase().includes(searchTerm) || (p.desc||'').toLowerCase().includes(searchTerm);
     return matchCat && matchSearch;
   });
@@ -58,7 +59,7 @@ function renderGrid(){
         <div class="card-meta">
           ${p.material ? `<span>${escapeHtml(p.material)}</span>` : ''}
           ${p.time ? `<span>${escapeHtml(p.time)}</span>` : ''}
-          ${p.category ? `<span>${escapeHtml(p.category)}</span>` : ''}
+          ${p.category ? `<span>${escapeHtml(Array.isArray(p.category) ? p.category.join(', ') : p.category)}</span>` : ''}
         </div>
         <div class="card-footer">
           <div class="card-price">${p.price ? 'R$ ' + escapeHtml(p.price) : 'a combinar'}</div>
