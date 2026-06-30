@@ -67,7 +67,7 @@ const PRODUCTS = [
   },
   {
     name: 'Suporte para celular',
-    desc: 'Suporte de celular 3D inspirado em Banguela de Como Treinar Seu Dragão. Duas utilidades em um só item!\n\nQuando o celular não está em uso, é um requintado enfeite para mesa, mesa gamer ou penteadeira. Coloque o celular e ele instantaneamente se transforma em um suporte preguiçoso, perfeito para maratonar séries, assistir filmes, transmissões ao vivo e aulas online.\n\nPresente criativo e incomum para fãs de Como Treinar Seu Dragão, estudantes, amantes de séries e colecionadores.',
+    desc: 'Suporte de celular 3D prático e funcional. Duas utilidades em um só item!\n\nQuando o celular não está em uso, é um enfeite decorativo para mesa, mesa gamer ou penteadeira. Coloque o celular e ele instantaneamente se transforma em um suporte firme e estável, perfeito para maratonar séries, assistir filmes, transmissões ao vivo, aulas online e videoconferências.\n\nDesenhado para máxima compatibilidade e estabilidade, funciona com a maioria dos modelos de celular. Leve, durável e prático — ideal para qualquer ambiente. Personalize com sua cor favorita ou escolha entre nossos designs exclusivos.',
     category: 'Suporte',
     price: 'a combinar',
     material: 'PLA',
