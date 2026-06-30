@@ -74,5 +74,24 @@ const PRODUCTS = [
     time: '2.3h',
     weight: '48g',
     image: 'https://makerworld.bblmw.com/makerworld/model/USe45d8ed5f9b8fb/design/35f1ca03d4e4438a.jpg?x-oss-process=image/resize,w_1000/format,webp'
+  },
+  {
+    name: 'Interruptor de luz',
+    desc: 'Este interruptor de luz superengenhado foi projetado para funcionar como um interruptor de luz basculante. Ele vem com uma elegante capa no estilo de placa de circuito para complementar o design.\n\nPerfeit para quem quer um toque tech e diferenciado na decoração. Funcional e decorativo ao mesmo tempo!',
+    category: 'Decoração',
+    price: 'a combinar',
+    material: 'PLA',
+    time: '6.1h',
+    weight: '152g',
+    image: 'https://makerworld.bblmw.com/makerworld/model/USedbc3047f89d24/design/2025-01-16_6ba6c3aa8a3b1.jpg?x-oss-process=image/resize,w_1000/format,webp'
+  },
+  {
+    name: 'Litofânia',
+    desc: 'Luminária litofânica personalizada com suas fotos e imagens preferidas! Crie um efeito visual único onde a luz revela seus momentos especiais.\n\nCada litofânia é impressa sob encomenda de acordo com a foto que você enviar. Funciona com qualquer foto — desde momentos especiais, paisagens, até retratos. Acompanha orientações de impressão otimizadas para melhor qualidade.\n\nPerfect para presentear ou decorar seu espaço com toque pessoal. Compatível com lâmpadas LED padrão. Personalize completamente com sua imagem!',
+    category: 'Personalização',
+    price: 'a combinar',
+    material: 'PLA',
+    time: 'Depende da imagem',
+    image: 'https://makerworld.bblmw.com/makerworld/model/US92489ed96f8953/design/2025-02-09_8eab94e6d3381.jpg?x-oss-process=image/resize,w_1000/format,webp'
   }
 ];
